@@ -11,7 +11,7 @@ node[:deploy].each do |application, deploy|
     cwd '/'
     user 'deploy'
     code <<-EOH
-      if test -f "#{current_path}/app/js/rootScope/rootScope.#{env}.html"; sudo ln -sf app/js/rootScope/rootScope.#{env}.html app/js/rootScope/rootScope.js;fi
+      if test -f "#{current_path}/app/js/rootScope/rootScope.#{env}.html"; ln -sf #{current_path}/app/js/rootScope/rootScope.#{env}.html #{current_path}/app/js/rootScope/rootScope.js;fi
     EOH
   end
 
@@ -21,7 +21,7 @@ node[:deploy].each do |application, deploy|
     cwd '/'
     user 'deploy'
     code <<-EOH
-      if test -f "#{current_path}/app/index.#{env}.html"; sudo ln -sf app/index.#{env}.html app/index.html;fi
+      if test -f "#{current_path}/app/index.#{env}.html"; ln -sf #{current_path}/app/index.#{env}.html #{current_path}/app/index.html;fi
     EOH
   end
 end
