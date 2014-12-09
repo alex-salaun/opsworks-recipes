@@ -3,13 +3,13 @@ node[:deploy].each do |application, deploy|
   current_path = deploy[:current_path]
 
   Chef::Log.info("Symlink files")
+  Chef::Log.info("Env : #{env}")
 
   script 'symlink_rootScope_file' do
     cwd current_path
     user 'deploy'
     code <<-EOH
-      cd app/js/rootScope/
-      ln -sf rootScope.#{env}.js rootScope.js
+      if test -f "app/js/rootScope/rootScope.#{env}.html"; ln -sf app/js/rootScope/rootScope.#{env}.html app/js/rootScope/rootScope.js;fi
     EOH
   end
 
@@ -17,8 +17,7 @@ node[:deploy].each do |application, deploy|
     cwd current_path
     user 'deploy'
     code <<-EOH
-      cd app/
-      ln -sf index.#{env}.html index.html
+      if test -f "app/index.#{env}.html"; ln -sf app/index.#{env}.html app/index.html;fi
     EOH
   end
 end
