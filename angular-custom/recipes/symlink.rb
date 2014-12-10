@@ -8,8 +8,8 @@ node[:deploy].each do |application, deploy|
   Chef::Log.info("Path rootScope : /srv/www/isis_staging-1/current/app/js/rootScope/rootScope.#{env}.html")
 
   script 'symlink_rootScope_file' do
-    cwd current_path
-    user '/'
+    cwd '/'
+    user 'deploy'
     code <<-EOH
       if [ -f /srv/www/isis_staging-1/current/app/js/rootScope/rootScope.#{env}.js ]; then
       ln -sf /srv/www/isis_staging-1/current/app/js/rootScope/rootScope.#{env}.js /srv/www/isis_staging-1/current/app/js/rootScope/rootScope.js
