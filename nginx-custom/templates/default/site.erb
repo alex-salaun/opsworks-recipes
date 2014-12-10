@@ -1,0 +1,36 @@
+server {
+  listen   80;
+  server_name  <%= @domain %> <%= @app_name %>;
+  access_log  /var/log/nginx/<%= @domain %>.access.log;
+
+  location / {
+    root   /srv/www/<%= @app_name %>/current/app/;
+    index  index.html index.htm index.php;
+  }
+
+  # Block all svn access
+  if ($request_uri ~* ^.*\.svn.*$) {
+     return 404;
+  }
+
+  # Block all git access
+  if ($request_uri ~* ^.*\.git.*$) {
+     return 404;
+  }
+
+  location /nginx_status {
+    stub_status on;
+    access_log off;
+    allow 127.0.0.1;
+    deny all;
+  }
+
+  error_page 503 @maintenance;
+  location @maintenance {
+    rewrite  ^(.*)$  /maintenance.html last;
+    break;
+  }
+
+  error_page 404 /404.html;
+  error_page 500 502 504 /500.html;
+}
