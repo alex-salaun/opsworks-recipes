@@ -1,7 +1,10 @@
-Chef::Log.info("Configure Nginx Proxy Pass")
+Chef::Log.info("Configure Nginx")
 
 node[:deploy].each do |app_name, deploy|
-  if defined?(deploy[:application_type]) && deploy[:application_type] == 'rails'
+  Chef::Log.info("Debug : #{deploy[:application_type]}")
+  Chef::Log.info("Debug : #{deploy}")
+
+  if defined?(deploy[:application_type]) && deploy[:application_type] == 'static'
     Chef::Log.info("Update conf file : /etc/nginx/sites-available/#{app_name.gsub('-', '_')}")
 
     template "/etc/nginx/sites-available/#{app_name.gsub('-', '_')}" do
