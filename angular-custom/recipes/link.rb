@@ -20,7 +20,7 @@ node[:deploy].each do |application, deploy|
   Chef::Log.info("Path index.html : #{current_path}/app/index.#{env}.html")
 
   script 'symlink_index' do
-    cwd '/'
+    cwd current_path
     user 'deploy'
     code <<-EOH
       if [ -f app/index.#{env}.html ]; then
