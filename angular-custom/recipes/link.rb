@@ -12,22 +12,26 @@ node[:deploy].each do |application, deploy|
     Chef::Log.info("Path rootScope : #{current_path}/app/js/rootScope/rootScope.#{env}.html")
 
     script 'symlink_rootScope_file' do
+      interpreter "bash"
       cwd current_path
-      user 'deploy'
+      user "root"
       code <<-EOH
-        rm app/js/rootScope/rootScope.js
-        cp app/js/rootScope/rootScope.#{env}.js app/js/rootScope/rootScope.js
+        if [ -f app/js/rootScope/rootScope.#{env}.js ]; then
+        ln -sf app/js/rootScope/rootScope.#{env}.js app/js/rootScope/rootScope.js
+        fi
       EOH
     end
 
     Chef::Log.info("Path index.html : #{current_path}/app/index.#{env}.html")
 
     script 'symlink_index' do
+      interpreter "bash"
       cwd current_path
-      user 'deploy'
+      user "root"
       code <<-EOH
-        rm app/index.html
-        cp app/index.#{env}.html app/index.html
+        if [ -f app/index.#{env}.html ]; then
+        ln -sf app/index.#{env}.html app/index.html
+        fi
       EOH
     end
   end
