@@ -15,9 +15,8 @@ node[:deploy].each do |application, deploy|
       cwd current_path
       user 'deploy'
       code <<-EOH
-        if [ -f app/js/rootScope/rootScope.#{env}.js ]; then
-        ln -sf app/js/rootScope/rootScope.#{env}.js app/js/rootScope/rootScope.js
-        fi
+        rm app/js/rootScope/rootScope.js
+        cp app/js/rootScope/rootScope.#{env}.js app/js/rootScope/rootScope.js
       EOH
     end
 
@@ -27,9 +26,8 @@ node[:deploy].each do |application, deploy|
       cwd current_path
       user 'deploy'
       code <<-EOH
-        if [ -f app/index.#{env}.html ]; then
-        ln -sf app/index.#{env}.html app/index.html
-        fi
+        rm app/index.html
+        cp app/index.#{env}.html app/index.html
       EOH
     end
   end
