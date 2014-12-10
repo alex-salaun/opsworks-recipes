@@ -13,11 +13,11 @@ node[:deploy].each do |application, deploy|
 
     script 'symlink_rootScope_file' do
       interpreter "bash"
-      cwd current_path
+      cwd "#{current_path}/app/js/rootScope/"
       user "root"
       code <<-EOH
-        if [ -f app/js/rootScope/rootScope.#{env}.js ]; then
-        ln -sf app/js/rootScope/rootScope.#{env}.js app/js/rootScope/rootScope.js
+        if [ -f rootScope.#{env}.js ]; then
+        ln -sf rootScope.#{env}.js rootScope.js
         fi
       EOH
     end
@@ -26,11 +26,11 @@ node[:deploy].each do |application, deploy|
 
     script 'symlink_index' do
       interpreter "bash"
-      cwd current_path
+      cwd "#{current_path}/app/"
       user "root"
       code <<-EOH
-        if [ -f app/index.#{env}.html ]; then
-        ln -sf app/index.#{env}.html app/index.html
+        if [ -f index.#{env}.html ]; then
+        ln -sf index.#{env}.html index.html
         fi
       EOH
     end
