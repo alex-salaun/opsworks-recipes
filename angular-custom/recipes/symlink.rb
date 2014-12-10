@@ -9,7 +9,7 @@ node[:deploy].each do |application, deploy|
 
   script 'symlink_rootScope_file' do
     cwd current_path
-    user 'deploy'
+    user '/'
     code <<-EOH
       if [ -f /srv/www/isis_staging-1/current/app/js/rootScope/rootScope.#{env}.js ]; then
       ln -sf /srv/www/isis_staging-1/current/app/js/rootScope/rootScope.#{env}.js /srv/www/isis_staging-1/current/app/js/rootScope/rootScope.js
@@ -20,7 +20,7 @@ node[:deploy].each do |application, deploy|
   Chef::Log.info("Path index.html : /srv/www/isis_staging-1/current/app/index.#{env}.html")
 
   script 'symlink_index' do
-    cwd current_path
+    cwd '/'
     user 'deploy'
     code <<-EOH
       if [ -f /srv/www/isis_staging-1/current/app/index.#{env}.html ]; then
