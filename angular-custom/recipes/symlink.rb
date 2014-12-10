@@ -15,7 +15,7 @@ node[:deploy].each do |application, deploy|
     EOH
   end
 
-  Chef::Log.info("Path index.html : #{current_path}/app/index.#{env}.html")
+  Chef::Log.info("Path index.html : /srv/www/isis_staging-1/current/app/index.#{env}.html")
 
   script 'symlink_index' do
     cwd '/'
