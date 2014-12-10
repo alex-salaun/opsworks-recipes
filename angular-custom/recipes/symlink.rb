@@ -5,13 +5,13 @@ node[:deploy].each do |application, deploy|
   Chef::Log.info("Symlink files")
   Chef::Log.info("Env : #{env}")
 
-  Chef::Log.info("Path rootScope : #{current_path}/app/js/rootScope/rootScope.#{env}.html")
+  Chef::Log.info("Path rootScope : /srv/www/isis_staging-1/current/app/js/rootScope/rootScope.#{env}.html")
 
   script 'symlink_rootScope_file' do
     cwd '/'
     user 'deploy'
     code <<-EOH
-      if test -f "#{current_path}/app/js/rootScope/rootScope.#{env}.html"; ln -sf #{current_path}/app/js/rootScope/rootScope.#{env}.html #{current_path}/app/js/rootScope/rootScope.js;fi
+      if test -f "/srv/www/isis_staging-1/current/app/js/rootScope/rootScope.#{env}.html"; ln -sf /srv/www/isis_staging-1/current/app/js/rootScope/rootScope.#{env}.html /srv/www/isis_staging-1/current/app/js/rootScope/rootScope.js;fi
     EOH
   end
 
@@ -21,7 +21,7 @@ node[:deploy].each do |application, deploy|
     cwd '/'
     user 'deploy'
     code <<-EOH
-      if test -f "#{current_path}/app/index.#{env}.html"; ln -sf #{current_path}/app/index.#{env}.html #{current_path}/app/index.html;fi
+      if test -f "/srv/www/isis_staging-1/current/app/index.#{env}.html"; ln -sf /srv/www/isis_staging-1/current/app/index.#{env}.html /srv/www/isis_staging-1/current/app/index.html;fi
     EOH
   end
 end
