@@ -34,5 +34,18 @@ node[:deploy].each do |application, deploy|
         fi
       EOH
     end
+
+    Chef::Log.info("Path robots.txt : #{current_path}/app/robots.#{env}.html")
+
+    script 'symlink_robots' do
+      interpreter "bash"
+      cwd "#{current_path}/app/"
+      user "root"
+      code <<-EOH
+        if [ -f robots.#{env}.txt ]; then
+        ln -sf robots.#{env}.txt robots.txt
+        fi
+      EOH
+    end
   end
 end
