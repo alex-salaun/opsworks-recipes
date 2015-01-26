@@ -7,6 +7,10 @@ server {
     rewrite ^(.*)$ http://<%= @domain %>$1 permanent;
   }
 
+  if ($http_x_forwarded_proto != 'https') {
+    rewrite ^ https://$host$request_uri? permanent;
+  }
+
   location / {
     root   /srv/www/<%= @app_name %>/current/app/;
     index  index.html index.htm index.php;
