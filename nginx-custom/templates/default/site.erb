@@ -3,6 +3,10 @@ server {
   server_name  <%= @domain %> <%= @app_name %>;
   access_log  /var/log/nginx/<%= @domain %>.access.log;
 
+  if ($http_host !~* "<%= @domain %>") {
+    rewrite ^(.*)$ http://<%= @domain %>$1 permanent;
+  }
+
   location / {
     root   /srv/www/<%= @app_name %>/current/app/;
     index  index.html index.htm index.php;

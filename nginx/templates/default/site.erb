@@ -3,6 +3,10 @@ server {
   server_name  <%= @application[:domains].join(" ") %> <%= node[:hostname] %>;
   access_log  <%= node[:nginx][:log_dir] %>/<%= @application[:domains].first %>.access.log;
 
+  if ($http_host !~* "<%= @application[:domains].first %>") {
+    rewrite ^(.*)$ http://<%= @application[:domains].first %>$1 permanent;
+  }
+
   location / {
     root   <%= @application[:absolute_document_root] %>;
     index  index.html index.htm index.php;
