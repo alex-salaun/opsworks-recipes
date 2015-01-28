@@ -2,9 +2,9 @@ Chef::Log.info("Configure Nginx")
 
 node[:deploy].each do |app_name, deploy|
   Chef::Log.info("Debug application type : #{deploy[:application_type]}")
-  if defined?(deploy[:application_type]) && deploy[:application_type] == 'custom'
+  if defined?(deploy[:application_type]) && (deploy[:application_type] == 'custom' || deploy[:application_type] == 'rails')
 
-    script "add_htpasswd" do
+    script "install_elasticsearch" do
       interpreter "bash"
       user "root"
       cwd "/"
@@ -19,7 +19,7 @@ node[:deploy].each do |app_name, deploy|
       action :stop
     end
 
-    script "add_htpasswd" do
+    script "install_elasticsearch_plugin" do
       interpreter "bash"
       user "root"
       cwd "/"
@@ -29,14 +29,28 @@ node[:deploy].each do |app_name, deploy|
       EOH
     end
 
-    template "/etc/elasticsearch/elasticsearch.yml" do
-      source "elasticsearch.yml.erb"
+    if deploy[:application_type] == 'custom'
+      template "/etc/elasticsearch/elasticsearch.yml" do
+        source "elasticsearch_master.yml.erb"
 
-      variables(
-        :elasticsearch_cluster    => deploy[:environment][:elasticsearch_cluster],
-        :elasticsearch_access_key => deploy[:environment][:elasticsearch_access_key],
-        :elasticsearch_secret_key => deploy[:environment][:elasticsearch_secret_key]
-      )
+        variables(
+          :elasticsearch_cluster    => deploy[:environment][:elasticsearch_cluster],
+          :elasticsearch_access_key => deploy[:environment][:elasticsearch_access_key],
+          :elasticsearch_secret_key => deploy[:environment][:elasticsearch_secret_key]
+        )
+      end
+    end
+
+    if deploy[:application_type] == 'rails'
+      template "/etc/elasticsearch/elasticsearch.yml" do
+        source "elasticsearch_slave.yml.erb"
+
+        variables(
+          :elasticsearch_cluster    => deploy[:environment][:elasticsearch_cluster],
+          :elasticsearch_access_key => deploy[:environment][:elasticsearch_access_key],
+          :elasticsearch_secret_key => deploy[:environment][:elasticsearch_secret_key]
+        )
+      end
     end
 
     service "elasticsearch" do

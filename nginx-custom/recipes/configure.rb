@@ -6,16 +6,15 @@ node[:deploy].each do |app_name, deploy|
 
     htaccess_username = node[:custom_nginx][:htaccess_username]
     htaccess_password = node[:custom_nginx][:htaccess_password]
-    authorized_ip     = '10.0.0.0/8'
+    authorized_ip     = node[:custom_nginx][:authorized_ip] || '10.0.0.0/8'
 
     template "/etc/nginx/sites-available/#{app_name.gsub('-', '_')}" do
       source "site.erb"
 
       variables(
-        :proxy_url     => deploy[:environment][:proxy_url],
         :app_name      => app_name.gsub('-', '_'),
         :domain        => (deploy[:domains].first),
-        :authorized_ip => deploy[:environment][:authorized_ip] || authorized_ip
+        :authorized_ip => authorized_ip
       )
     end
 
