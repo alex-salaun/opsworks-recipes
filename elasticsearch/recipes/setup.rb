@@ -1,6 +1,7 @@
 Chef::Log.info("Configure Nginx")
 
 node[:deploy].each do |app_name, deploy|
+  Chef::Log.info("Debug deploy : #{deploy.inspect}")
   Chef::Log.info("Debug application type : #{deploy[:application_type]}")
   if defined?(deploy[:application_type]) && (deploy[:application_type] == 'custom' || deploy[:application_type] == 'rails')
 
@@ -37,7 +38,9 @@ node[:deploy].each do |app_name, deploy|
         variables(
           :elasticsearch_cluster    => node[:elasticsearch][:cluster],
           :elasticsearch_access_key => node[:elasticsearch][:access_key],
-          :elasticsearch_secret_key => node[:elasticsearch][:secret_key]
+          :elasticsearch_secret_key => node[:elasticsearch][:secret_key],
+          :elasticsearch_region     => node[:elasticsearch][:region],
+          :elasticsearch_endpoint   => node[:elasticsearch][:endpoint]
         )
       end
     end
@@ -49,7 +52,9 @@ node[:deploy].each do |app_name, deploy|
         variables(
           :elasticsearch_cluster    => node[:elasticsearch][:cluster],
           :elasticsearch_access_key => node[:elasticsearch][:access_key],
-          :elasticsearch_secret_key => node[:elasticsearch][:secret_key]
+          :elasticsearch_secret_key => node[:elasticsearch][:secret_key],
+          :elasticsearch_region     => node[:elasticsearch][:region],
+          :elasticsearch_endpoint   => node[:elasticsearch][:endpoint]
         )
       end
     end

@@ -4,7 +4,9 @@ cloud:
   aws:
     access_key: '<%= @elasticsearch_access_key %>'
     secret_key: '<%= @elasticsearch_secret_key %>'
-    region: 'eu-central-1'
+    region: '<%= @elasticsearch_region %>'
+    ec2:
+      endpoint: '<%= @elasticsearch_endpoint %>'
 discovery:
   type: 'ec2'
   ec2:
