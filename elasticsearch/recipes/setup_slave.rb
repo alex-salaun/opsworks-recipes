@@ -31,32 +31,16 @@ node[:deploy].each do |app_name, deploy|
       EOH
     end
 
-    if deploy[:application_type] == 'custom'
-      template "/etc/elasticsearch/elasticsearch.yml" do
-        source "elasticsearch_master.yml.erb"
+    template "/etc/elasticsearch/elasticsearch.yml" do
+      source "elasticsearch_slave.yml.erb"
 
-        variables(
-          :elasticsearch_cluster    => node[:elasticsearch][:cluster],
-          :elasticsearch_access_key => node[:elasticsearch][:access_key],
-          :elasticsearch_secret_key => node[:elasticsearch][:secret_key],
-          :elasticsearch_region     => node[:elasticsearch][:region],
-          :elasticsearch_endpoint   => node[:elasticsearch][:endpoint]
-        )
-      end
-    end
-
-    if deploy[:application_type] == 'rails'
-      template "/etc/elasticsearch/elasticsearch.yml" do
-        source "elasticsearch_slave.yml.erb"
-
-        variables(
-          :elasticsearch_cluster    => node[:elasticsearch][:cluster],
-          :elasticsearch_access_key => node[:elasticsearch][:access_key],
-          :elasticsearch_secret_key => node[:elasticsearch][:secret_key],
-          :elasticsearch_region     => node[:elasticsearch][:region],
-          :elasticsearch_endpoint   => node[:elasticsearch][:endpoint]
-        )
-      end
+      variables(
+        :elasticsearch_cluster    => node[:elasticsearch][:cluster],
+        :elasticsearch_access_key => node[:elasticsearch][:access_key],
+        :elasticsearch_secret_key => node[:elasticsearch][:secret_key],
+        :elasticsearch_region     => node[:elasticsearch][:region],
+        :elasticsearch_endpoint   => node[:elasticsearch][:endpoint]
+      )
     end
 
     service "elasticsearch" do
