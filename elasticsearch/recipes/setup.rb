@@ -12,6 +12,7 @@ node[:deploy].each do |app_name, deploy|
       wget -qO - http://packages.elasticsearch.org/GPG-KEY-elasticsearch | apt-key add -
       add-apt-repository 'deb http://packages.elasticsearch.org/elasticsearch/1.3/debian stable main'
       apt-get update && apt-get install elasticsearch=1.3.4
+      apt-get install default-jre
       EOH
     end
 
