@@ -11,7 +11,7 @@ node[:deploy].each do |app_name, deploy|
       code <<-EOH
       wget -qO - http://packages.elasticsearch.org/GPG-KEY-elasticsearch | apt-key add -
       add-apt-repository 'deb http://packages.elasticsearch.org/elasticsearch/1.2/debian stable main'
-      apt-get update && apt-get install elasticsearch
+      apt-get update && apt-get install elasticsearch=1.3.4
       EOH
     end
 
@@ -34,9 +34,9 @@ node[:deploy].each do |app_name, deploy|
         source "elasticsearch_master.yml.erb"
 
         variables(
-          :elasticsearch_cluster    => deploy[:environment][:elasticsearch_cluster],
-          :elasticsearch_access_key => deploy[:environment][:elasticsearch_access_key],
-          :elasticsearch_secret_key => deploy[:environment][:elasticsearch_secret_key]
+          :elasticsearch_cluster    => node[:elasticsearch][:cluster],
+          :elasticsearch_access_key => node[:elasticsearch][:access_key],
+          :elasticsearch_secret_key => node[:elasticsearch][:secret_key]
         )
       end
     end
@@ -46,9 +46,9 @@ node[:deploy].each do |app_name, deploy|
         source "elasticsearch_slave.yml.erb"
 
         variables(
-          :elasticsearch_cluster    => deploy[:environment][:elasticsearch_cluster],
-          :elasticsearch_access_key => deploy[:environment][:elasticsearch_access_key],
-          :elasticsearch_secret_key => deploy[:environment][:elasticsearch_secret_key]
+          :elasticsearch_cluster    => node[:elasticsearch][:cluster],
+          :elasticsearch_access_key => node[:elasticsearch][:access_key],
+          :elasticsearch_secret_key => node[:elasticsearch][:secret_key]
         )
       end
     end
