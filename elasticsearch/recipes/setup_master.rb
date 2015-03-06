@@ -36,8 +36,7 @@ node[:deploy].each do |app_name, deploy|
         :elasticsearch_cluster    => node[:elasticsearch][:cluster],
         :elasticsearch_access_key => node[:elasticsearch][:access_key],
         :elasticsearch_secret_key => node[:elasticsearch][:secret_key],
-        :elasticsearch_region     => node[:elasticsearch][:region],
-        :elasticsearch_endpoint   => node[:elasticsearch][:endpoint]
+        :elasticsearch_region     => node[:elasticsearch][:region]
       )
     end
 
